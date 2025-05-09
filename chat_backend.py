@@ -41,9 +41,13 @@ def chat_api():
                 {"role": "user", "content": user_message}
             ]
         )
-        reply = completion.choices[0].message.content
+        # Robust error handling for LLM response
+        if hasattr(completion, "choices") and completion.choices and hasattr(completion.choices[0], "message") and hasattr(completion.choices[0].message, "content"):
+            reply = completion.choices[0].message.content
+        else:
+            reply = "Sorry, I couldn't generate a response right now. Please try again later."
     except Exception as e:
-        reply = f"Error: {str(e)}"
+        reply = f"Sorry, I couldn't generate a response right now. (Error: {e})"
     return jsonify({'reply': reply})
 
 @app.route('/')
