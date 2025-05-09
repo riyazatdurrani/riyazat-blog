@@ -3,7 +3,11 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from openai import OpenAI
 
-OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY', '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')
+OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY')
+if not OPENROUTER_API_KEY:
+    raise RuntimeError("OPENROUTER_API_KEY environment variable not set!")
+print("OPENROUTER_API_KEY:", repr(OPENROUTER_API_KEY))  # Remove this after debugging
+
 PROFILE_PATH = os.path.join(os.path.dirname(__file__), 'profile.txt')
 
 app = Flask(__name__)
@@ -38,6 +42,10 @@ def chat_api():
     except Exception as e:
         reply = f"Error: {str(e)}"
     return jsonify({'reply': reply})
+
+@app.route('/')
+def home():
+    return 'Riyazat Chat API is running!'
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5001))
