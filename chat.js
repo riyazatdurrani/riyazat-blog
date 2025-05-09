@@ -20,7 +20,7 @@ async function sendMessage() {
     addMessage('user', message);
     input.value = '';
     showTyping();
-    const response = await fetch('http://localhost:5001/chat-api', {
+    const response = await fetch('https://riyazat-blog.onrender.com/chat-api', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message })
