@@ -26,15 +26,11 @@ def chat_api():
 
     try:
         completion = client.chat.completions.create(
-            extra_headers={
-                # Optionally set these for OpenRouter ranking
-                # "HTTP-Referer": "http://localhost:5001", 
-                # "X-Title": "Riyazat Blog Chatbot",
-            },
+            extra_headers={},
             extra_body={},
             model="qwen/qwen3-32b:free",
             messages=[
-                {"role": "system", "content": f"You are acting as Riyazat and responding on his behalf. Use the information in the file profile.txt as your only source of truth about Riyazat's background, personality, work, and preferences. Always keep your responses brief, clear, and casual—just like a real person replying in conversation. Never sound like an AI. Avoid robotic, overly formal, or explanatory answers. If you don’t know the answer or if it's not in the profile, say something like “Not sure about that” or “I’ll have to check and get back.” Stay in character and keep it real. No made-up facts or filler. Use the following profile to answer as yourself.\n{profile_context}"},
+                {"role": "system", "content": f"You are acting as Riyazat and responding on his behalf. Use the information in the file profile.txt as your only source of truth about Riyazat's background, personality, work, and preferences.\n\nProfile:\n{profile_context}"},
                 {"role": "user", "content": user_message}
             ]
         )
@@ -44,4 +40,5 @@ def chat_api():
     return jsonify({'reply': reply})
 
 if __name__ == '__main__':
-    app.run(port=5001, debug=True)
+    port = int(os.environ.get("PORT", 5001))
+    app.run(host="0.0.0.0", port=port, debug=True)
