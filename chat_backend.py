@@ -2,11 +2,14 @@ import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from openai import OpenAI
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY')
 if not OPENROUTER_API_KEY:
     raise RuntimeError("OPENROUTER_API_KEY environment variable not set!")
-print("OPENROUTER_API_KEY:", repr(OPENROUTER_API_KEY))  # Remove this after debugging
 
 PROFILE_PATH = os.path.join(os.path.dirname(__file__), 'profile.txt')
 
